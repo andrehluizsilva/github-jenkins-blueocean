@@ -3,7 +3,10 @@ pipeline {
   stages {
     stage('Checkout') {
       agent {
-        label 'docker'
+        docker {
+          image 'maven:3-alpine'
+          label 'docker'
+        }        
       }
       steps {
         echo 'Checkout'
@@ -11,7 +14,10 @@ pipeline {
     }
     stage('Build') {
       agent {
-        label 'docker'
+        docker {
+          image 'maven:3-alpine'
+          label 'docker'
+        }        
       }
       steps {
         echo 'Building App'
@@ -35,8 +41,6 @@ pipeline {
               }
               
             }
-            
-            
           }
         )
       }
@@ -46,8 +50,7 @@ pipeline {
         docker {
           image 'maven:3-alpine'
           label 'docker'
-        }
-        
+        }        
       }
       steps {
         echo 'Deploying Apps'
