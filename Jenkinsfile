@@ -2,13 +2,17 @@ pipeline {
   agent none
   stages {
     stage('Checkout') {
-      agent { label 'docker' }
+      agent {
+        label 'docker'
+      }
       steps {
         echo 'Checkout'
       }
     }
     stage('Build') {
-      agent { label 'docker' }
+      agent {
+        label 'docker'
+      }
       steps {
         echo 'Building App'
         sleep 2
@@ -21,11 +25,15 @@ pipeline {
         parallel(
           "Test 1": {
             echo 'Testing 1'
+            error 'Error'
             
           },
           "Test 2": {
-            timeout(time: 2) {
-              sleep 10
+            catchError() {
+              timeout(time: 5) {
+                sleep 20
+              }
+              
             }
             
             
@@ -38,10 +46,12 @@ pipeline {
         docker {
           image 'maven:3-alpine'
           label 'docker'
-        } 
+        }
+        
       }
       steps {
         echo 'Deploying Apps'
+        input(message: 'Waiting for deploy', submitter: 'admin', submitterParameter: 'OK', ok: 'OK')
       }
     }
   }
