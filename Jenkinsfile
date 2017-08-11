@@ -3,18 +3,9 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        parallel(
-          "Build 1": {
-            echo 'Building App'
-            sleep 2
-            isUnix()
-            
-          },
-          "Build 2": {
-            echo 'Build another app'
-            
-          }
-        )
+        echo 'Building App'
+        sleep 2
+        isUnix()
       }
     }
     stage('Test') {
@@ -25,7 +16,10 @@ pipeline {
             
           },
           "Test 2": {
-            sleep 5
+            timeout(time: 2) {
+              sleep 10
+            }
+            
             
           }
         )
