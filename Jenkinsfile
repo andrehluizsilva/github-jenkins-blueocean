@@ -1,7 +1,14 @@
 pipeline {
-  agent any
+  agent none
   stages {
+    stage('Checkout') {
+      agent docker
+      steps {
+        echo 'Checkout'
+      }
+    }
     stage('Build') {
+      agent docker
       steps {
         echo 'Building App'
         sleep 2
@@ -9,6 +16,7 @@ pipeline {
       }
     }
     stage('Test') {
+      agent any
       steps {
         parallel(
           "Test 1": {
@@ -26,6 +34,7 @@ pipeline {
       }
     }
     stage('Deploy') {
+      agent docker
       steps {
         echo 'Deploying Apps'
       }
